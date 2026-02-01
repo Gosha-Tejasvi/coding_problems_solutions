@@ -1,0 +1,104 @@
+290. Word Pattern
+
+Given a pattern and a string s, find if s follows the same pattern.
+
+Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in s. Specifically:
+
+Each letter in pattern maps to exactly one unique word in s.
+Each unique word in s maps to exactly one letter in pattern.
+No two letters map to the same word, and no two words map to the same letter.
+ 
+
+Example 1:
+
+Input: pattern = "abba", s = "dog cat cat dog"
+
+Output: true
+
+Explanation:
+
+The bijection can be established as:
+
+'a' maps to "dog".
+'b' maps to "cat".
+Example 2:
+
+Input: pattern = "abba", s = "dog cat cat fish"
+
+Output: false
+
+Example 3:
+
+Input: pattern = "aaaa", s = "dog cat cat dog"
+
+Output: false
+
+ 
+-------------------------------------------------------------------------------------
+Constraints:
+
+1 <= pattern.length <= 300
+pattern contains only lower-case English letters.
+1 <= s.length <= 3000
+s contains only lowercase English letters and spaces ' '.
+s does not contain any leading or trailing spaces.
+All the words in s are separated by a single space.
+
+------------------------------------------------------------------------------------------------
+
+class Solution:
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        words=s.split()
+
+        if (len(pattern) != len(words)):
+            return False
+
+        d={}
+        used_words=set() 
+
+        for letter,word in zip(pattern,words):
+            if letter in d:
+                if d[letter] != word:
+                    return False
+            else:
+                if word in used_words:
+                    return False
+                
+                d[letter]=word
+                used_words.add(word)
+        return True
+
+---------------------------------------------------
+
+code Explanation:
+
+here in the wordPattern function when it is called,
+it will have values of pattern and the string
+return type is boolean  , that is True or False
+
+now words=s.split()
+this means , the sentence is now split into words
+
+now we are checking that weather the pattern length and the count of number of words in the string are equal or not, if they are not equal, we will immediately return False
+
+After that we are initiaizing a python dictionary
+dictionary will be used to store the key value pairs
+
+we will be storing the used words in the used_words variable   in the form of set
+python set()   stores only the unique values, it will remove the duplicate values
+
+
+we will now iterate through letters in pattern and words in dictionary
+ for letter,word in zip(patter,words)
+
+
+if  letter is in d  and if d[letter] != current word
+it will return false
+
+else  , if the word is present in used words it will return false
+
+otherwise it will assign d[letter]=word
+and add the word in used words
+
+return true
+--------------
