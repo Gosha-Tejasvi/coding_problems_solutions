@@ -1,0 +1,149 @@
+ 31. Next Permutation 
+---------------------------------------------------------------------------
+A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+
+For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2, 1, 3], [2, 3, 1], [3,1,2], [3,2,1].
+The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+
+For example, the next permutation of arr = [1,2,3] is [1,3,2].
+Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.
+Given an array of integers nums, find the next permutation of nums.
+
+The replacement must be in place and use only constant extra memory.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [1,3,2]
+Example 2:
+
+Input: nums = [3,2,1]
+Output: [1,2,3]
+Example 3:
+
+Input: nums = [1,1,5]
+Output: [1,5,1]
+ 
+
+Constraints:
+
+1 <= nums.length <= 100
+0 <= nums[i] <= 100
+
+---------------------------------------------------------
+📌 Problem Overview
+
+A permutation is an arrangement of elements in a specific order.
+
+The next permutation of an array is the next lexicographically greater arrangement of its elements.
+
+If such a permutation exists → return it
+
+If it does NOT exist (array is in descending order) → rearrange to the lowest possible order (ascending)
+
+⚠️ Constraints:
+
+Must modify the array in-place
+
+Must use constant extra memory
+
+🧠 Key Observations
+
+Lexicographical order works like dictionary order.
+
+From right to left:
+
+The suffix (right part) is often already in descending order
+
+To get the next larger permutation, we must:
+
+Make a small increase
+
+Keep the change as far right as possible
+
+✅ Algorithm Steps
+Step 1: Handle small arrays
+
+If the array has 0 or 1 element, no permutation is possible.
+
+Step 2: Find the pivot
+
+Traverse the array from right to left and find the first index i such that:
+
+nums[i] < nums[i + 1]
+
+
+This index is called the pivot.
+
+If no such index exists → array is in descending order
+
+Step 3: Find the successor
+
+From the right end, find the smallest element that is greater than the pivot element.
+
+Step 4: Swap pivot and successor
+
+Swap the pivot element with its successor to create a slightly larger permutation.
+
+Step 5: Reverse the suffix
+
+Reverse the portion of the array to the right of the pivot to get the smallest possible order.
+
+🧩 Code
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+
+        # Step 1: If array has 0 or 1 element, no permutation needed
+        if len(nums) <= 1:
+            return
+
+        # Step 2: Find the pivot (first decreasing element from the right)
+        n = len(nums) - 1
+        while n >= 1:
+            if nums[n - 1] < nums[n]:
+                # Step 3: Find the successor
+                j = len(nums) - 1
+                while nums[j] <= nums[n - 1]:
+                    j -= 1
+
+                # Step 4: Swap pivot and successor
+                nums[n - 1], nums[j] = nums[j], nums[n - 1]
+                break
+            else:
+                n -= 1
+
+        # Step 5: Reverse the suffix
+        nums[n:] = reversed(nums[n:])
+
+🧪 Example Walkthrough
+Example 1
+Input:  [1, 2, 3]
+Pivot:  2
+Swap:   2 ↔ 3
+Output: [1, 3, 2]
+
+Example 2
+Input:  [3, 2, 1]
+No pivot found (fully descending)
+Reverse whole array
+Output: [1, 2, 3]
+
+Example 3
+Input:  [1, 1, 5]
+Pivot:  1
+Swap:   1 ↔ 5
+Output: [1, 5, 1]
+
+⏱ Complexity Analysis
+Metric	Value
+Time Complexity	O(n)
+Space Complexity	O(1) (in-place)
+📝 One-Line Summary
+
+The algorithm finds the first decreasing element from the right, swaps it with the next greater element, and reverses the remaining suffix to produce the next lexicographical permutation.
