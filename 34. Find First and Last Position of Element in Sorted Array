@@ -1,0 +1,99 @@
+34. Find First and Last Position of Element in Sorted Array
+
+Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+
+If target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
+
+ 
+
+Example 1:
+
+Input: nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
+Example 2:
+
+Input: nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
+Example 3:
+
+Input: nums = [], target = 0
+Output: [-1,-1]
+ 
+
+Constraints:
+
+0 <= nums.length <= 105
+-109 <= nums[i] <= 109
+nums is a non-decreasing array.
+-109 <= target <= 109
+-----------------------------------------------------------------------
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        l=[]
+        if len(nums)==0:
+            return [-1,-1]
+        for i in range(len(nums)):
+            if nums[i]==target:
+                l.append(i)
+        if len(l)==0:
+            return [-1,-1]
+        if len(l)==1:
+            l.insert(1,l[0])
+            return l
+        if len(l)>2:
+            return l[0],l[-1]
+        return l
+
+----------------------------------------------------------------------
+
+✅ Intuition
+
+We are given a sorted array nums and a target.
+The goal is to find the starting index and ending index of the target value in the array.
+
+If the target does not exist, return [-1, -1]
+
+If the target appears only once, both start and end index will be the same
+
+If it appears multiple times, return the first and last occurrence
+
+The simplest idea is:
+👉 Traverse the array and store all indices where nums[i] == target
+Then:
+
+First index = first element
+
+Last index = last element
+
+✅ Approach
+
+Create an empty list l to store indices where the target is found.
+
+If the array is empty, immediately return [-1, -1].
+
+Traverse the array using a loop:
+
+If nums[i] == target, append i to list l.
+
+After traversal:
+
+If l is empty → target not found → return [-1, -1]
+
+If l has one element → target appears once → return [l[0], l[0]]
+
+Otherwise → return [l[0], l[-1]]
+
+This approach works correctly for all cases.
+
+✅ Complexity
+⏱ Time Complexity:
+
+O(n)
+We scan the array once.
+
+🧠 Space Complexity:
+
+O(k)
+Where k is the number of occurrences of the target (extra list used).
